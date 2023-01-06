@@ -8,8 +8,6 @@ import { getMovieRank } from "./slices/MovieRankSlice";
 import Spinner from './components/Spinner';
 // 에러정보를 표시하기 위한 컴포넌트
 import ErrorView from './components/ErrorView';
-// 테이블 css적용을 위한 컴포넌트
-import Table from './components/Table';
 // 그래프 표시르 위한 컴포넌트
 import BarChartView from './components/BarChartView';
 // 미디어쿼리
@@ -73,24 +71,20 @@ const App = memo(() => {
       <h1>영화진흥위원회 박스오피스 순위</h1>
 
       <form>
-        <input type="date" className="form-control" placeholder="연도-월-일" value={targetDt} onChange={onDataChange}/>
+        <input type="date" className="form-control" placeholder="연도-월-일"  onChange={onDataChange}/>
       </form>
 
       {error? <ErrorView error={error} /> : (
             <Container>
+                
                 <div className="flex-item">
-                    <BarChartView labels={movieNm} dataset={audiCnt} legend={`${targetDt} 관람객 수`} />
-                </div>
-                <div className="flex-item">
-                    <Table>
+                    <table border='1'>
                         <thead>
                             <tr>
                                 <th>순위</th>
-                                <th>제목</th>
-                                <th>관람객 수</th>
-                                <th>매출액</th>
-                                <th>누적 관람객 수</th>
-                                <th>누적 매출액</th>
+                                <th>영화제목</th>
+                                <th>관객수</th>
+                                <th>개봉일</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -99,15 +93,16 @@ const App = memo(() => {
                                     <tr key={i}>
                                         <td>{v.rank}</td>
                                         <td>{v.movieNm}</td>
-                                        <td>{Number(v.audiCnt).toLocaleString()}명</td>
-                                        <td>{Number(v.salesAmt).toLocaleString()}원</td>
-                                        <td>{Number(v.audiAcc).toLocaleString()}명</td>
-                                        <td>{Number(v.salesAcc).toLocaleString()}명</td>
+                                        <td>{Number(v.audiCnt).toLocaleString()}</td>
+                                        <td>{v.openDt}</td>
                                     </tr>
                                 )
                             })}
                         </tbody>
-                    </Table>
+                    </table>
+                </div>
+                <div className="flex-item">
+                    <BarChartView labels={movieNm} dataset={audiCnt} legend='관람객 수' />
                 </div>
             </Container>
         )}
